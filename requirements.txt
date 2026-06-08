@@ -1,0 +1,17 @@
+# ─────────────────────────────────────────────────────────────
+#  MediFind India — Python Dependencies
+#  Install with:  pip install -r requirements.txt
+# ─────────────────────────────────────────────────────────────
+
+# Gemini Gen AI SDK (new SDK — not google-generativeai)
+google-genai>=2.8.0
+
+# Web framework + SSE streaming
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# Environment variable loading
+python-dotenv>=1.0.0
+
+# Type stubs (optional but helpful during development)
+# pip install types-flask

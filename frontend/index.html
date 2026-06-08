@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediFind India — AI-Powered Medicine Alternative Finder</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!--  HEADER                                                         -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <header class="app-header" id="appHeader">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="19" stroke="url(#lg1)" stroke-width="2"/>
+            <path d="M12 20h16M20 12v16" stroke="url(#lg2)" stroke-width="3" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="lg1" x1="0" y1="0" x2="40" y2="40">
+                <stop stop-color="#FF6B35"/><stop offset="1" stop-color="#F7971E"/>
+              </linearGradient>
+              <linearGradient id="lg2" x1="0" y1="0" x2="40" y2="40">
+                <stop stop-color="#FF6B35"/><stop offset="1" stop-color="#FFD700"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-main">MediFind</span>
+          <span class="logo-sub">India</span>
+        </div>
+      </div>
+      <div class="header-badge" id="modelBadge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">Gemini 3.5 Flash · ReAct Agents</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!--  HERO / SEARCH SECTION                                          -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <section class="hero-section" id="heroSection">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-chip">🇮🇳 Indian Pharmaceutical Market</span>
+        <span class="eyebrow-chip">🤖 AI Multi-Agent Research</span>
+      </div>
+      <h1 class="hero-title">
+        Find Smarter<br />
+        <span class="hero-highlight">Medicine Alternatives</span>
+      </h1>
+      <p class="hero-desc">
+        Enter any Indian medicine. Our AI orchestrator deploys 10 specialised research agents
+        using <strong>ReAct reasoning</strong>, Google Search, and Jaccard similarity to find
+        the best alternatives — ranked by composition match and price.
+      </p>
+
+      <!-- Search Form -->
+      <form class="search-form" id="searchForm" autocomplete="off">
+        <div class="search-input-wrapper">
+          <div class="search-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+              <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="medicineInput"
+            class="search-input"
+            placeholder="e.g. Crocin 500mg, Azithral 500, Augmentin..."
+            spellcheck="false"
+            autofocus
+          />
+          <button type="submit" class="search-btn" id="searchBtn">
+            <span class="btn-text">Analyse</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </div>
+        <div class="search-hints">
+          <span>Try:</span>
+          <button type="button" class="hint-chip" data-medicine="Paracetamol 500mg">Paracetamol 500mg</button>
+          <button type="button" class="hint-chip" data-medicine="Azithromycin 500mg">Azithromycin 500mg</button>
+          <button type="button" class="hint-chip" data-medicine="Metformin 500mg">Metformin 500mg</button>
+          <button type="button" class="hint-chip" data-medicine="Omeprazole 20mg">Omeprazole 20mg</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Decorative background -->
+    <div class="hero-bg-decoration" aria-hidden="true">
+      <div class="bg-circle bg-circle-1"></div>
+      <div class="bg-circle bg-circle-2"></div>
+      <div class="bg-circle bg-circle-3"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!--  PIPELINE CONTAINER — all dynamic content goes here             -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <main class="pipeline-container hidden" id="pipelineContainer">
+
+    <!-- ── Progress Bar ──────────────────────────────────────────── -->
+    <div class="progress-bar-wrapper" id="progressBar">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-stages" id="progressStages">
+        <div class="stage active" data-stage="validation">
+          <div class="stage-dot"></div><span>Validate</span>
+        </div>
+        <div class="stage" data-stage="discovery">
+          <div class="stage-dot"></div><span>Discover</span>
+        </div>
+        <div class="stage" data-stage="agents">
+          <div class="stage-dot"></div><span>Research</span>
+        </div>
+        <div class="stage" data-stage="ranking">
+          <div class="stage-dot"></div><span>Rank</span>
+        </div>
+        <div class="stage" data-stage="results">
+          <div class="stage-dot"></div><span>Results</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Status Banner ──────────────────────────────────────────── -->
+    <div class="status-banner hidden" id="statusBanner">
+      <div class="status-indicator">
+        <div class="status-spinner" id="statusSpinner"></div>
+        <span class="status-text" id="statusText">Initialising...</span>
+      </div>
+    </div>
+
+    <!-- ── Validation Card ───────────────────────────────────────── -->
+    <section class="pipeline-section" id="validationSection">
+      <div class="section-header">
+        <div class="section-icon">🔬</div>
+        <h2 class="section-title">Medicine Validation</h2>
+      </div>
+      <div class="validation-card" id="validationCard">
+        <div class="vc-loading">
+          <div class="shimmer-line"></div>
+          <div class="shimmer-line short"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Orchestrator Thinking Panel ───────────────────────────── -->
+    <section class="pipeline-section hidden" id="thinkingSection">
+      <div class="section-header">
+        <div class="section-icon">🧠</div>
+        <h2 class="section-title">Orchestrator Chain-of-Thought</h2>
+        <div class="thinking-badge">
+          <div class="thinking-pulse"></div>
+          <span>Gemini 3.5 Flash — Extended Thinking</span>
+        </div>
+      </div>
+      <div class="thinking-panel" id="thinkingPanel">
+        <div class="thinking-header">
+          <span class="thinking-label">💭 Reasoning Process</span>
+          <button class="collapse-btn" id="thinkingCollapseBtn" aria-label="Collapse">▲</button>
+        </div>
+        <div class="thinking-body" id="thinkingBody">
+          <div class="thinking-stream" id="thinkingStream"></div>
+        </div>
+      </div>
+      <div class="orchestrator-response hidden" id="orchestratorResponse">
+        <div class="or-header">📋 Orchestrator Plan</div>
+        <div class="or-body" id="orchestratorResponseBody"></div>
+      </div>
+    </section>
+
+    <!-- ── Alternatives Discovery ────────────────────────────────── -->
+    <section class="pipeline-section hidden" id="alternativesSection">
+      <div class="section-header">
+        <div class="section-icon">💊</div>
+        <h2 class="section-title">10 Alternatives Discovered</h2>
+      </div>
+      <div class="alternatives-grid" id="alternativesGrid"></div>
+    </section>
+
+    <!-- ── Agent Hub ──────────────────────────────────────────────── -->
+    <section class="pipeline-section hidden" id="agentSection">
+      <div class="section-header">
+        <div class="section-icon">🤖</div>
+        <h2 class="section-title">Research Agents — Live Feed</h2>
+        <div class="agent-count-badge" id="agentCountBadge">0 / 10 complete</div>
+      </div>
+      <div class="agent-hub" id="agentHub"></div>
+    </section>
+
+    <!-- ── Similarity Computation ─────────────────────────────────── -->
+    <section class="pipeline-section hidden" id="similaritySection">
+      <div class="section-header">
+        <div class="section-icon">⚖️</div>
+        <h2 class="section-title">Jaccard Similarity & Price Ranking</h2>
+      </div>
+      <div class="similarity-info-grid">
+        <div class="sim-info-card">
+          <div class="sim-info-icon">🧪</div>
+          <div class="sim-info-title">Composition (40%)</div>
+          <div class="sim-info-desc">Jaccard similarity on ingredient sets: |A∩B| / |A∪B|</div>
+        </div>
+        <div class="sim-info-card accent">
+          <div class="sim-info-icon">💰</div>
+          <div class="sim-info-title">Price (60%)</div>
+          <div class="sim-info-desc">Normalised closeness to original price in ₹</div>
+        </div>
+        <div class="sim-info-card gold">
+          <div class="sim-info-icon">🏆</div>
+          <div class="sim-info-title">Composite Score</div>
+          <div class="sim-info-desc">0.6 × Price + 0.4 × Jaccard — ranked #1 to #10</div>
+        </div>
+      </div>
+      <div class="similarity-bars" id="similarityBars"></div>
+    </section>
+
+    <!-- ── Final Results ──────────────────────────────────────────── -->
+    <section class="pipeline-section hidden" id="resultsSection">
+      <div class="section-header">
+        <div class="section-icon">🏆</div>
+        <h2 class="section-title">Top Alternatives — Ranked</h2>
+        <button class="new-search-btn" id="newSearchBtn">🔍 New Search</button>
+      </div>
+      <div class="results-grid" id="resultsGrid"></div>
+    </section>
+
+    <!-- ── Tool Calls Summary ─────────────────────────────────────── -->
+    <section class="pipeline-section hidden" id="toolSummarySection">
+      <div class="section-header">
+        <div class="section-icon">🛠️</div>
+        <h2 class="section-title">All Tool Calls — Full Audit Log</h2>
+        <div class="tool-count-badge" id="toolCountBadge"></div>
+      </div>
+      <div class="tool-log" id="toolLog"></div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!--  ERROR TOAST                                                     -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <div class="toast hidden" id="errorToast">
+    <span class="toast-icon">⚠️</span>
+    <span class="toast-msg" id="toastMsg"></span>
+    <button class="toast-close" onclick="document.getElementById('errorToast').classList.add('hidden')">×</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!--  SCRIPTS                                                         -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <script src="/js/components.js"></script>
+  <script src="/js/stream.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
